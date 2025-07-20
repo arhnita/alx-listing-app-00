@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { PROPERTYLISTINGSAMPLE, HERO_BACKGROUND, FILTER_CATEGORIES } from '@/constants';
 import { PropertyProps } from '@/interfaces';
-import PropertyCard from '@/components/common/common/PropertyCard';
-import Pill from '@/components/common/common/Pills';
+import PropertyCard from '@/components/common/PropertyCard';
+import Pill from '@/components/common/Pills';
 
 const Home: React.FC = () => {
   const [selectedFilter, setSelectedFilter] = useState<string>('All');
