@@ -1,115 +1,141 @@
-import Image from "next/image";
-import { Geist, Geist_Mono } from "next/font/google";
+import React, { useState } from 'react';
+import { PROPERTYLISTINGSAMPLE, HERO_BACKGROUND, FILTER_CATEGORIES } from '@/constants';
+import { PropertyProps } from '@/interfaces';
+import PropertyCard from '@/components/common/common/PropertyCard';
+import Pill from '@/components/common/common/Pills';
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+const Home: React.FC = () => {
+  const [selectedFilter, setSelectedFilter] = useState<string>('All');
+  const [filteredProperties, setFilteredProperties] = useState<PropertyProps[]>(PROPERTYLISTINGSAMPLE);
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+  const handleFilterClick = (filter: string) => {
+    setSelectedFilter(filter);
+    
+    if (filter === 'All') {
+      setFilteredProperties(PROPERTYLISTINGSAMPLE);
+    } else {
+      const filtered = PROPERTYLISTINGSAMPLE.filter(property =>
+        property.category.some(cat => 
+          cat.toLowerCase().includes(filter.toLowerCase()) ||
+          filter.toLowerCase().includes(cat.toLowerCase())
+        )
+      );
+      setFilteredProperties(filtered);
+    }
+  };
 
-export default function Home() {
   return (
-    <div
-      className={`${geistSans.className} ${geistMono.className} grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]`}
-    >
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              pages/index.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div>
+      {/* Hero Section */}
+      <section 
+        className="relative h-[70vh] flex items-center justify-center text-center"
+        style={{
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${HERO_BACKGROUND})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      >
+        <div className="max-w-4xl mx-auto px-4">
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
+            Find your favorite place here!
+          </h1>
+          <p className="text-xl md:text-2xl text-white font-light">
+            The best prices for over 2 million properties worldwide
+          </p>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </section>
+
+      {/* Filter Section */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex flex-wrap gap-4">
+            <Pill
+              label="All"
+              isActive={selectedFilter === 'All'}
+              onClick={() => handleFilterClick('All')}
+            />
+            {FILTER_CATEGORIES.map((filter) => (
+              <Pill
+                key={filter}
+                label={filter}
+                isActive={selectedFilter === filter}
+                onClick={() => handleFilterClick(filter)}
+              />
+            ))}
+          </div>
+          
+          <div className="hidden md:flex items-center space-x-4">
+            <button className="flex items-center space-x-2 border border-gray-300 rounded-lg px-4 py-2 hover:bg-gray-50 transition">
+              <svg className="h-4 w-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+              </svg>
+              <span className="text-sm text-gray-700">Filter</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Results Count */}
+        <div className="mb-6">
+          <p className="text-gray-600">
+            {filteredProperties.length} properties found
+            {selectedFilter !== 'All' && (
+              <span className="ml-2">
+                for <span className="font-medium">{selectedFilter}</span>
+              </span>
+            )}
+          </p>
+        </div>
+
+        {/* Property Listings Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {filteredProperties.map((property, index) => (
+            <PropertyCard
+              key={index}
+              name={property.name}
+              address={property.address}
+              rating={property.rating}
+              category={property.category}
+              price={property.price}
+              offers={property.offers}
+              image={property.image}
+              discount={property.discount}
+            />
+          ))}
+        </div>
+
+        {/* No Results */}
+        {filteredProperties.length === 0 && (
+          <div className="text-center py-12">
+            <div className="max-w-md mx-auto">
+              <svg className="h-16 w-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              </svg>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">No properties found</h3>
+              <p className="text-gray-600 mb-4">
+                We could not find any properties matching {selectedFilter}. Try adjusting your filter.
+              </p>
+              <button
+                onClick={() => handleFilterClick('All')}
+                className="bg-pink-500 text-white px-6 py-2 rounded-lg hover:bg-pink-600 transition"
+              >
+                Show All Properties
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Load More Button */}
+        {filteredProperties.length > 0 && (
+          <div className="text-center mt-12">
+            <button className="bg-gray-900 text-white px-8 py-3 rounded-lg hover:bg-gray-800 transition font-medium">
+              Show more properties
+            </button>
+          </div>
+        )}
+      </section>
     </div>
   );
-}
+};
+
+export default Home;

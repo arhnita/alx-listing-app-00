@@ -1,6 +1,4 @@
-// interfaces/index.ts
 
-// Simple property data
 export interface Property {
   id: string;
   title: string;
@@ -11,16 +9,45 @@ export interface Property {
   rating: number;
 }
 
-// Simple card props
 export interface CardProps {
   property: Property;
   onClick?: () => void;
 }
 
-// Simple button props  
+
 export interface ButtonProps {
   children: React.ReactNode;
   onClick?: () => void;
   variant?: 'primary' | 'secondary';
   disabled?: boolean;
+}
+
+
+export interface PropertyProps {
+  name: string;
+  address: {
+    state: string;
+    city: string;
+    country: string;
+  };
+  rating: number;
+  category: string[];
+  price: number;
+  offers: {
+    bed: string;
+    shower: string;
+    occupants: string;
+  };
+  image: string;
+  discount: string;
+}
+
+export interface PillProps {
+  label: string;
+  isActive?: boolean;
+  onClick?: () => void;
+}
+
+export interface LayoutProps {
+  children: React.ReactNode;
 }
